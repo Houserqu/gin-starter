@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-var logger *log.Logger
+var defaultLogger *log.Logger
 
 func init() {
 	writer, err := os.OpenFile("./default.log", os.O_WRONLY|os.O_CREATE, 0755)
@@ -17,9 +17,9 @@ func init() {
 
 	fmt.Println("init log")
 
-	logger = log.New(io.MultiWriter(writer), "", log.Lshortfile|log.LstdFlags)
+	defaultLogger = log.New(io.MultiWriter(writer), "", log.Lshortfile|log.LstdFlags)
 }
 
 func Log(v ...interface{}) {
-	logger.Println(v)
+	defaultLogger.Println(v)
 }
