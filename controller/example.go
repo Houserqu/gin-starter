@@ -3,8 +3,8 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 	"houserqu.com/gin-starter/lib"
+	"houserqu.com/gin-starter/module/example"
 )
-import "houserqu.com/gin-starter/module/example"
 
 type FindReq struct {
 	ID int `form:"id" binding:"required"`
@@ -14,7 +14,8 @@ func InitUserRouter(r *gin.Engine) {
 	r.GET("/ping", func(c *gin.Context) {
 		tom := example.GetHello()
 		lib.Log(tom)
-		c.JSON(200, tom)
+
+		c.JSON(lib.Success(tom, "success"))
 	})
 
 	// 查单个
