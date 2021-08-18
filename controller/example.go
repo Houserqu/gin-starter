@@ -22,7 +22,7 @@ func InitUserRouter(r *gin.Engine) {
 	r.GET("/find", func(c *gin.Context) {
 		var query FindReq
 		if err := c.ShouldBind(&query); err != nil {
-			c.JSON(200, gin.H{"msg": err.Error()})
+			c.JSON(lib.Error(lib.ErrParam, err.Error()))
 			return
 		}
 
