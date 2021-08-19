@@ -4,13 +4,20 @@ gin web 开发脚手架
 
 ## 目录结构
 
+> 借鉴 [project-layout](https://github.com/golang-standards/project-layout)
+
 ## 开发规范
 
 ## 特性
 
-- [配置](#配置)
-- [日志](#日志)
-- [数据库](#数据库)
+- [gin-start](#gin-start)
+  - [目录结构](#目录结构)
+  - [开发规范](#开发规范)
+  - [特性](#特性)
+    - [配置](#配置)
+    - [日志](#日志)
+    - [数据库](#数据库)
+      - [Mysql](#mysql)
 
 ### 配置
 
