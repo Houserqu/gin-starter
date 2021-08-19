@@ -1,4 +1,4 @@
-package lib
+package internal
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 var defaultLogger *log.Logger
 
 func init() {
-	writer, err := os.OpenFile("./default.log", os.O_WRONLY|os.O_CREATE, 0755)
+	writer, err := os.OpenFile("./logs/default.log", os.O_WRONLY|os.O_CREATE, 0755)
 	if err != nil {
 		log.Fatalf("create log file failed: %v", err)
 	}

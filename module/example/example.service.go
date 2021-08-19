@@ -1,6 +1,6 @@
 package example
 
-import "houserqu.com/gin-starter/lib"
+import "houserqu.com/gin-starter/internal"
 
 type Hello struct {
 	First string `json:"hello"`
@@ -14,13 +14,13 @@ func GetHello() Hello {
 
 func GetModelByID(id int) Example {
 	var example Example
-	lib.DB.Take(&example, id)
+	internal.DB.Take(&example, id)
 
 	return example
 }
 
 func GetModelAll() (examples []Example, err error) {
-	res := lib.DB.Find(&examples)
+	res := internal.DB.Find(&examples)
 	err = res.Error
 	return
 }
