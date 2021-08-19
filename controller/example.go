@@ -10,7 +10,7 @@ type FindReq struct {
 	ID int `form:"id" binding:"required"`
 }
 
-func InitUserRouter(r *gin.Engine) {
+func InitExampleRouter(r *gin.Engine) {
 	r.GET("/ping", func(c *gin.Context) {
 		tom := example.GetHello()
 		internal.Log(tom)
