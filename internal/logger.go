@@ -52,7 +52,9 @@ func init() {
 		logrus.ErrorLevel: writer,
 		logrus.FatalLevel: writer,
 		logrus.PanicLevel: writer,
-	}, &logrus.JSONFormatter{})
+	}, &logrus.JSONFormatter{
+		TimestampFormat: "2006-01-02 15:04:05",
+	})
 
 	Logger.AddHook(lfHook)
 

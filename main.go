@@ -4,15 +4,25 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	"houserqu.com/gin-starter/controller"
+	"houserqu.com/gin-starter/internal/middleware"
 	"log"
 	"os"
 )
 
 func main() {
-	r := gin.Default()
+	r := gin.New()
 
+	r.Use(gin.Recovery())
+	r.Use(middleware.Access())
+
+	if os.Getenv("GIN_LOG") == "true" {
+		r.Use(gin.Logger())
+	}
+
+	// 静态文件
 	r.Static("/public", "./web/public")
 	r.LoadHTMLGlob("./web/views/*")
+
 	// 注册路由
 	controller.InitViewRouter(r)
 	controller.InitExampleRouter(r)
