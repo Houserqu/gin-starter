@@ -13,8 +13,7 @@ type FindReq struct {
 func InitExampleRouter(r *gin.Engine) {
 	r.GET("/ping", func(c *gin.Context) {
 		tom := example.GetHello()
-		internal.Log(tom)
-
+		internal.Log.Debug(tom)
 		c.JSON(internal.Success(tom, "success"))
 	})
 
@@ -27,7 +26,6 @@ func InitExampleRouter(r *gin.Engine) {
 		}
 
 		data := example.GetModelByID(query.ID)
-		internal.Log(data)
 		c.JSON(200, data)
 	})
 

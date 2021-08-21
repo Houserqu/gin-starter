@@ -4,7 +4,7 @@ gin web 开发脚手架
 
 ## 目录结构
 
-> 借鉴 [project-layout](https://github.com/golang-standards/project-layout)
+> 参考 [project-layout](https://github.com/golang-standards/project-layout)
 
 ## 开发规范
 
@@ -26,7 +26,7 @@ godotenv 库会加载 .env 配置文件到环境变量中，通过 `os.Getenv("S
 
 ### 日志
 
-使用系统自带的日志工具
+使用 [logrus](https://github.com/sirupsen/logrus) 日志工具
 
 ### 数据库
 
