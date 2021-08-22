@@ -4,20 +4,18 @@ gin web 开发脚手架
 
 ## 目录结构
 
-> 参考 [project-layout](https://github.com/golang-standards/project-layout)
+> 借鉴 [project-layout](https://github.com/golang-standards/project-layout)
 
-## 开发规范
+## 开发
+
+启动命令
+
+```bash
+./bin/air      # 启动 air 热重载服务，监听文件改动自动重启（推荐）
+go run main.go # 直接启动服务
+````
 
 ## 特性
-
-- [gin-start](#gin-start)
-  - [目录结构](#目录结构)
-  - [开发规范](#开发规范)
-  - [特性](#特性)
-    - [配置](#配置)
-    - [日志](#日志)
-    - [数据库](#数据库)
-      - [Mysql](#mysql)
 
 ### 配置
 
