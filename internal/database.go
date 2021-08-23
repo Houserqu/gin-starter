@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -23,14 +24,19 @@ func init() {
 		},
 	)
 
-	db, err := gorm.Open(mysql.New(mysql.Config{
-		DSN: "root:root@tcp(127.0.0.1:3306)/example?charset=utf8mb4&parseTime=True&loc=Local",
-	}), &gorm.Config{
+	host := os.Getenv("MYSQL_HOST")
+	port := os.Getenv("MYSQL_PORT")
+	user := os.Getenv("MYSQL_USER")
+	password := os.Getenv("MYSQL_PASSWORD")
+	database := os.Getenv("MYSQL_DB")
+
+	dsn := fmt.Sprint(user, ":", password, "@tcp(", host, ":", port, ")/", database, "?charset=utf8mb4&parseTime=True&loc=Local")
+	db, err := gorm.Open(mysql.New(mysql.Config{DSN: dsn}), &gorm.Config{
 		Logger: dbLogger,
 	})
 
 	if err != nil {
-		panic("connect database fail") // TODO: Logger
+		log.Fatal(err.Error())
 	}
 
 	DB = db
