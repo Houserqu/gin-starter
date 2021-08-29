@@ -82,7 +82,7 @@ docker run -d --env-file prod.env -p 8090:8088 -v /Users/houserqu/gin-starter/lo
 ### 直接部署
 
 ```bash
-go build main.go        # 构建
-./gin-starter           # 直接启动
-pm2 start ./gin-starter # pm 守护进程启动
+go build main.go # 构建
+./main           # 直接启动
+pm2 start ./main # pm 守护进程启动
 ```
