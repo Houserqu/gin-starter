@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"fmt"
 	"github.com/lestrrat/go-file-rotatelogs"
 	"github.com/pkg/errors"
 	"github.com/rifflock/lfshook"
@@ -30,8 +29,6 @@ func init() {
 		log.Fatalf(err.Error())
 	}
 	logPath := path.Join(logFolderPath, "default.log")
-
-	fmt.Println(logPath)
 
 	writer, err := rotatelogs.New(
 		logPath+".%Y-%m-%d.log",

@@ -61,3 +61,28 @@ go get -u gorm.io/gorm
 ```bash
 go get -u github.com/go-sql-driver/mysql
 ```
+
+## 部署
+
+### Docker 部署
+
+1. 构建镜像
+```bash
+docker build -t gin-starter:latest .
+```
+
+2. 启动容器
+```bash
+docker run -d --env-file prod.env -p 8090:8088 -v /Users/houserqu/gin-starter/logs:/app/logs gin-starter:latest
+```
+
+-p: 指定映射端口，容器内服务端口可以通过 env 文件配置  
+-v: 指定日志文件主机挂载目录，容器内日志目录可以通过 env 文件配置
+
+### 直接部署
+
+```bash
+go build main.go        # 构建
+./gin-starter           # 直接启动
+pm2 start ./gin-starter # pm 守护进程启动
+```
