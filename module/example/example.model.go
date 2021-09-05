@@ -1,14 +1,19 @@
 package example
 
-import "time"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type Example struct {
-	ID        uint `gorm:"primaryKey"`
-	Name      string
-	Age       int
-	CreatedAt time.Time `gorm:"autoCreateTime"`
-	UpdatedAt time.Time `gorm:"autoUpdateTime"`
-	DeleteAt  time.Time
+	ID        uint           `gorm:"primaryKey" json:"id"`
+	Name      string         `json:"name"`
+	Email     string         `json:"email"`
+	Age       int            `json:"age"`
+	Birthday  time.Time      `json:"birthday"`
+	CreatedAt time.Time      `gorm:"autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"autoUpdateTime" json:"updated_at"`
+	DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
 
 // TableName 自定义表明
