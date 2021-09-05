@@ -1,6 +1,10 @@
 # gin-start
 
-gin web 开发脚手架
+gin web 开发脚手架，根据个人开发经验封装的一些基础能力，并提供一些接入 mysql、redis 等中间件的示例。
+
+基础架构代码在 master 分支，示例代码在独立分支，如下
+
+- [mysql](https://github.com/Houserqu/gin-starter/tree/mysql): 使用 gorm 接入 mysql，并提供 增删改查示例。
 
 ## 目录结构
 
