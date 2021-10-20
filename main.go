@@ -1,12 +1,14 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	_ "github.com/joho/godotenv/autoload"
-	"houserqu.com/gin-starter/controller"
-	"houserqu.com/gin-starter/internal/middleware"
 	"log"
 	"os"
+
+	"github.com/gin-gonic/gin"
+	_ "github.com/joho/godotenv/autoload"
+	"houserqu.com/gin-starter/internal/middleware"
+	"houserqu.com/gin-starter/module/example"
+	"houserqu.com/gin-starter/module/view"
 )
 
 func main() {
@@ -20,12 +22,12 @@ func main() {
 	}
 
 	// 静态文件
-	r.Static("/public", "./web/public")
-	r.LoadHTMLGlob("./web/views/*")
+	r.Static("/public", "./public")
+	r.LoadHTMLGlob("./module/**/*.html")
 
 	// 注册路由
-	controller.InitViewRouter(r)
-	controller.InitExampleRouter(r)
+	view.InitViewRouter(r)
+	example.InitExampleRouter(r)
 
 	// 监听端口
 	err := r.Run(os.Getenv("SERVER_ADDR")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
