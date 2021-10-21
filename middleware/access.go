@@ -33,5 +33,7 @@ func Access() gin.HandlerFunc {
 			"req_method":   reqMethod,
 			"req_uri":      reqUri,
 		}).Info()
+
+		// 响应 header 追加
 	}
 }

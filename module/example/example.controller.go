@@ -24,10 +24,15 @@ func InitExampleRouter(r *gin.Engine) {
 		// 根据 ID 查找
 		data, err := GetModelByID()
 		if err != nil {
-			c.JSON(core.ResNotFound(err.Error()))
+			core.ResErrorWithData(c, core.ErrNotFound, "model 不存在", err.Error())
 			return
 		}
 
-		c.JSON(core.ResSuccess(data, ""))
+		core.ResSuccess(c, data, "")
+	})
+
+	r.GET("/error", func(c *gin.Context) {
+		// 根据 ID 查找
+		core.ResError(c, core.ErrCreateFail, "用户失败了")
 	})
 }
