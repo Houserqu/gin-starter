@@ -6,15 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/spf13/viper"
-	"houserqu.com/gin-starter/internal"
-	"houserqu.com/gin-starter/internal/middleware"
+	"houserqu.com/gin-starter/core"
+	"houserqu.com/gin-starter/middleware"
 	"houserqu.com/gin-starter/module/example"
 	"houserqu.com/gin-starter/module/view"
 )
 
 func main() {
-	internal.InitConfig()
-	internal.InitLogger()
+	core.InitConfig()
+	core.InitLogger()
 
 	r := gin.New()
 

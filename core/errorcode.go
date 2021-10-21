@@ -1,4 +1,4 @@
-package internal
+package core
 
 var (
 	ErrParam      = ErrorCode{Code: "INVALID_PARAM", Msg: "参数错误"}

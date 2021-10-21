@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
-	"houserqu.com/gin-starter/internal"
+	"houserqu.com/gin-starter/core"
 )
 
 func Access() gin.HandlerFunc {
@@ -24,7 +24,7 @@ func Access() gin.HandlerFunc {
 		statusCode := c.Writer.Status()       // 状态码
 		clientIP := c.ClientIP()              // 请求IP
 
-		internal.Logger.WithFields(logrus.Fields{
+		core.Logger.WithFields(logrus.Fields{
 			"type":         "ACCESSS",
 			"reqId":        reqId,
 			"status_code":  statusCode,
