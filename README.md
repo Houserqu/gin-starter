@@ -45,8 +45,8 @@ air       # 全局安装启动
 
 ### 配置
 
-godotenv 库会加载 .env 配置文件到环境变量中，通过 `os.Getenv("SERVER_ADDR")` 获取。
-.env 配置文件不应该包含在版本库中
+使用 [viper](https://github.com/spf13/viper) 库来管理系统配置，同时开启 watch 模式，默认加载项目根目录的 config.yaml 文件
+config.yaml 配置文件不应该包含在版本库中
 
 ### 日志
 

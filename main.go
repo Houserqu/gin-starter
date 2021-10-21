@@ -2,24 +2,25 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
+	"github.com/spf13/viper"
+	"houserqu.com/gin-starter/internal"
 	"houserqu.com/gin-starter/internal/middleware"
 	"houserqu.com/gin-starter/module/example"
 	"houserqu.com/gin-starter/module/view"
 )
 
 func main() {
+	internal.InitConfig()
+	internal.InitLogger()
+
 	r := gin.New()
 
+	// 注册中间件
 	r.Use(gin.Recovery())
 	r.Use(middleware.Access())
-
-	if os.Getenv("GIN_LOG") == "true" {
-		r.Use(gin.Logger())
-	}
 
 	// 静态文件
 	r.Static("/public", "./public")
@@ -31,7 +32,7 @@ func main() {
 	example.InitExampleRouter(r)
 
 	// 监听端口
-	err := r.Run(os.Getenv("SERVER_ADDR")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	err := r.Run(viper.GetString("server.addr"))
 	if err != nil {
 		log.Fatal("Error listen")
 	}
