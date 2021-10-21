@@ -1,22 +1,21 @@
 package internal
 
 import (
-	"github.com/lestrrat/go-file-rotatelogs"
-	"github.com/pkg/errors"
-	"github.com/rifflock/lfshook"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"log"
 	"os"
 	"path"
 	"path/filepath"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
+	"github.com/pkg/errors"
+	"github.com/rifflock/lfshook"
+	"github.com/sirupsen/logrus"
 )
 
 var Logger = logrus.New() // logrus 实例
-
-var Log *logrus.Entry       // 默认日志
-var LogAccess *logrus.Entry // 请求日志
 
 func init() {
 	Logger.SetReportCaller(true)       // 日志记录文件命名
@@ -54,7 +53,9 @@ func init() {
 	})
 
 	Logger.AddHook(lfHook)
+}
 
-	Log = Logger.WithFields(logrus.Fields{"type": "DEFAULT"})
-	LogAccess = Logger.WithFields(logrus.Fields{"type": "ACCESS"})
+func Log(c *gin.Context) *logrus.Entry {
+	value, _ := c.Get("reqId")
+	return Logger.WithFields(logrus.Fields{"type": "DEFAULT", "reqId": value})
 }

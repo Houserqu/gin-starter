@@ -20,6 +20,7 @@ type ReqModelUpdate struct {
 func InitExampleRouter(r *gin.Engine) {
 	// 查单个
 	r.GET("/example", func(c *gin.Context) {
+		internal.Log(c).Info("example")
 		// 根据 ID 查找
 		data, err := GetModelByID()
 		if err != nil {

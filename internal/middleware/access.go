@@ -1,16 +1,22 @@
 package middleware
 
 import (
+	"time"
+
 	"github.com/gin-gonic/gin"
+	uuid "github.com/satori/go.uuid"
 	"github.com/sirupsen/logrus"
 	"houserqu.com/gin-starter/internal"
-	"time"
 )
 
 func Access() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		startTime := time.Now()               // 开始时间
-		c.Next()                              // 处理请求
+		reqId := uuid.NewV4()
+		c.Set("reqId", reqId)
+		startTime := time.Now() // 开始时间
+
+		c.Next() // 处理请求
+
 		endTime := time.Now()                 // 结束时间
 		latencyTime := endTime.Sub(startTime) // 执行时间
 		reqMethod := c.Request.Method         // 请求方式
@@ -18,7 +24,9 @@ func Access() gin.HandlerFunc {
 		statusCode := c.Writer.Status()       // 状态码
 		clientIP := c.ClientIP()              // 请求IP
 
-		internal.LogAccess.WithFields(logrus.Fields{
+		internal.Logger.WithFields(logrus.Fields{
+			"type":         "ACCESSS",
+			"reqId":        reqId,
 			"status_code":  statusCode,
 			"latency_time": latencyTime,
 			"client_ip":    clientIP,

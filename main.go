@@ -23,6 +23,7 @@ func main() {
 
 	// 静态文件
 	r.Static("/public", "./public")
+	// html 模板文件
 	r.LoadHTMLGlob("./module/**/*.html")
 
 	// 注册路由

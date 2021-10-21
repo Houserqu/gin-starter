@@ -50,7 +50,13 @@ godotenv 库会加载 .env 配置文件到环境变量中，通过 `os.Getenv("S
 
 ### 日志
 
-使用 [logrus](https://github.com/sirupsen/logrus) 日志工具
+使用 [logrus](https://github.com/sirupsen/logrus) 日志工具，支持记录请求ID，用于查看日志链路。
+
+```golang
+import 	"houserqu.com/gin-starter/internal"
+
+internal.Log(c).Info("123") // 由于无法获取协程上下文，所以需要显式的传递 gin.Context，才能记录 request id
+```
 
 ### 数据库
 
