@@ -1,6 +1,9 @@
 package user
 
 import (
+	"errors"
+
+	"gorm.io/gorm"
 	"houserqu.com/gin-starter/core"
 )
 
@@ -9,8 +12,20 @@ func GetModelByID(id int) (user User, err error) {
 	return
 }
 
-func GetModelAll() (user []User, err error) {
-	err = core.Mysql.Find(&user).Error
+func GetModelAll(page int, size int, where interface{}) (user []User, err error) {
+	if size <= 0 {
+		size = 20
+	}
+
+	if page <= 0 {
+		size = 1
+	}
+
+	err = core.Mysql.Where(where).Limit(size).Offset((page - 1) * size).Find(&user).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = nil
+		user = []User{}
+	}
 	return
 }
 

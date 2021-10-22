@@ -7,8 +7,8 @@ import (
 
 type User struct {
 	ID          int
-	Name        string
-	Email       string
+	Name        string `form:"name"`
+	Email       string `form:"email"`
 	Age         int
 	Birthday    time.Time
 	ActivatedAt sql.NullTime

@@ -22,7 +22,7 @@ type ReqModelUpdate struct {
 
 func InitUserRouter(r *gin.Engine) {
 	// 查单个
-	r.GET("/model/:id", func(c *gin.Context) {
+	r.GET("/user/:id", func(c *gin.Context) {
 		// 参数转换和校验
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
@@ -41,18 +41,31 @@ func InitUserRouter(r *gin.Engine) {
 	})
 
 	// 查列表
-	r.GET("/model/list", func(c *gin.Context) {
-		data, err := GetModelAll()
-		if err != nil {
-			core.ResError(c, core.ErrNotFound, "")
+	r.GET("/user/list", func(c *gin.Context) {
+		var where User
+		if err := c.ShouldBindQuery(&where); err != nil {
+			core.ResError(c, core.ErrParam, err.Error())
 			return
+		}
+
+		// 分页参数
+		page, err := strconv.Atoi(c.DefaultQuery("page", "1"))
+		size, err := strconv.Atoi(c.DefaultQuery("size", "20"))
+		if err != nil {
+			core.ResError(c, core.ErrParam, err.Error())
+		}
+
+		data, err := GetModelAll(page, size, where)
+
+		if err != nil {
+			core.ResError(c, core.ErrDB, err.Error())
 		}
 
 		core.ResSuccess(c, data)
 	})
 
 	// 创建
-	r.POST("/model/create", func(c *gin.Context) {
+	r.POST("/user/create", func(c *gin.Context) {
 		var params ReqModelCreate
 		if err := c.ShouldBindJSON(&params); err != nil {
 			core.ResError(c, core.ErrParam, "")
@@ -70,7 +83,7 @@ func InitUserRouter(r *gin.Engine) {
 	})
 
 	// 更新
-	r.POST("/model/update", func(c *gin.Context) {
+	r.POST("/user/update", func(c *gin.Context) {
 		var params ReqModelUpdate
 		if err := c.ShouldBindJSON(&params); err != nil {
 			core.ResError(c, core.ErrParam, "")
@@ -87,7 +100,7 @@ func InitUserRouter(r *gin.Engine) {
 	})
 
 	// 删除
-	r.POST("/model/delete/:id", func(c *gin.Context) {
+	r.POST("/user/delete/:id", func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
 			core.ResError(c, core.ErrParam, "id invalid")
