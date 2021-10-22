@@ -22,11 +22,22 @@ type ErrorCode struct {
 }
 
 // ResSuccess 返回成功
-func ResSuccess(c *gin.Context, data interface{}, msg string) {
-	if len(msg) == 0 {
-		msg = "OK"
+func ResSuccess(c *gin.Context, data interface{}) {
+	reqId, _ := c.Get("reqId")
+	res := Response{
+		Code:  0,
+		Msg:   "OK",
+		Data:  data,
+		Time:  time.Now().Unix(),
+		ReqId: reqId,
 	}
 
+	c.JSON(200, res)
+	return
+}
+
+// ResSuccess 返回成功
+func ResSuccessWithMsg(c *gin.Context, data interface{}, msg string) {
 	reqId, _ := c.Get("reqId")
 	res := Response{
 		Code:  0,
