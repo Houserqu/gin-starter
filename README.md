@@ -1,6 +1,12 @@
 # gin-start
 
-gin web 开发脚手架
+gin web 开发脚手架，根据个人开发经验封装的一些基础能力，并提供一些接入 mysql、redis 等中间件的示例。
+
+基础架构代码在 master 分支，示例代码在独立分支
+
+## 功能分支
+
+- [mysql](https://github.com/Houserqu/gin-starter/tree/mysql): 使用 gorm 接入 mysql，并提供**增删改查**示例。
 
 ## 目录结构
 
@@ -41,12 +47,18 @@ air       # 全局安装启动
 
 ### 配置
 
-godotenv 库会加载 .env 配置文件到环境变量中，通过 `os.Getenv("SERVER_ADDR")` 获取。
-.env 配置文件不应该包含在版本库中
+使用 [viper](https://github.com/spf13/viper) 库来管理系统配置，同时开启 watch 模式，默认加载项目根目录的 config.yaml 文件
+config.yaml 配置文件不应该包含在版本库中
 
 ### 日志
 
-使用 [logrus](https://github.com/sirupsen/logrus) 日志工具
+使用 [logrus](https://github.com/sirupsen/logrus) 日志工具，支持记录请求ID，用于查看日志链路。
+
+```golang
+import 	"houserqu.com/gin-starter/internal"
+
+internal.Log(c).Info("123") // 由于无法获取协程上下文，所以需要显式的传递 gin.Context，才能记录 request id
+```
 
 ### 数据库
 

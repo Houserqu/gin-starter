@@ -7,10 +7,10 @@ COPY go.mod .
 COPY go.sum .
 RUN go mod download
 
-COPY controller/ controller/
-COPY internal/ internal/
+COPY core/ core/
+COPY middleware/ middleware/
 COPY module/ module/
-COPY web/ web/
+COPY public/ public/
 COPY main.go .
 
 RUN go build -o main .
@@ -20,6 +20,6 @@ FROM alpine:latest as prod
 WORKDIR /app
 
 COPY --from=0 /app/main .
-COPY --from=0 /app/web/ web/
+COPY --from=0 /app/public/ public/
 
 CMD ["./main"]

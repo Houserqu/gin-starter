@@ -1,11 +1,11 @@
-package controller
+package user
 
 import (
-	"github.com/gin-gonic/gin"
-	"houserqu.com/gin-starter/internal"
-	"houserqu.com/gin-starter/module/example"
 	"strconv"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	"houserqu.com/gin-starter/core"
 )
 
 type ReqModelCreate struct {
@@ -20,86 +20,86 @@ type ReqModelUpdate struct {
 	Email string `form:"email" binding:"required"`
 }
 
-func InitExampleRouter(r *gin.Engine) {
+func InitUserRouter(r *gin.Engine) {
 	// 查单个
 	r.GET("/model/:id", func(c *gin.Context) {
 		// 参数转换和校验
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			c.JSON(internal.ResParamError("id invalid"))
+			core.ResError(c, core.ErrParam, "")
 			return
 		}
 
 		// 根据 ID 查找
-		data, err := example.GetModelByID(id)
+		data, err := GetModelByID(id)
 		if err != nil {
-			c.JSON(internal.ResNotFound(err.Error()))
+			core.ResError(c, core.ErrNotFound, "")
 			return
 		}
 
-		c.JSON(internal.ResSuccess(data, ""))
+		core.ResSuccess(c, data)
 	})
 
 	// 查列表
 	r.GET("/model/list", func(c *gin.Context) {
-		data, err := example.GetModelAll()
+		data, err := GetModelAll()
 		if err != nil {
-			c.JSON(internal.ResNotFound(""))
+			core.ResError(c, core.ErrNotFound, "")
 			return
 		}
 
-		c.JSON(internal.ResSuccess(data, ""))
+		core.ResSuccess(c, data)
 	})
 
 	// 创建
 	r.POST("/model/create", func(c *gin.Context) {
 		var params ReqModelCreate
 		if err := c.ShouldBindJSON(&params); err != nil {
-			c.JSON(internal.ResParamError(err.Error()))
+			core.ResError(c, core.ErrParam, "")
 			return
 		}
 
-		result := &example.Example{Name: params.Name, Age: params.Age, Email: params.Email, Birthday: time.Now()}
-		err := example.CreateModel(result)
+		result := &User{Name: params.Name, Age: params.Age, Email: params.Email, Birthday: time.Now()}
+		err := CreateModel(result)
 		if err != nil {
-			c.JSON(internal.ResError(internal.ErrCreateFail, err.Error()))
+			core.ResError(c, core.ErrCreateFail, "")
 			return
 		}
 
-		c.JSON(internal.ResSuccess(result, ""))
+		core.ResSuccess(c, result)
 	})
 
 	// 更新
 	r.POST("/model/update", func(c *gin.Context) {
 		var params ReqModelUpdate
 		if err := c.ShouldBindJSON(&params); err != nil {
-			c.JSON(internal.ResParamError(err.Error()))
+			core.ResError(c, core.ErrParam, "")
 			return
 		}
 
-		result, err := example.UpdateModel(params.ID, params.Name, params.Email)
+		result, err := UpdateModel(params.ID, params.Name, params.Email)
 		if err != nil {
-			c.JSON(internal.ResError(internal.ErrUpdateFail, ""))
+			core.ResError(c, core.ErrUpdateFail, "")
 			return
 		}
 
-		c.JSON(internal.ResSuccess(result, ""))
+		core.ResSuccess(c, result)
 	})
 
 	// 删除
 	r.POST("/model/delete/:id", func(c *gin.Context) {
 		id, err := strconv.Atoi(c.Param("id"))
 		if err != nil {
-			c.JSON(internal.ResParamError("id invalid"))
+			core.ResError(c, core.ErrParam, "id invalid")
 			return
 		}
 
-		err = example.DelModel(id)
+		err = DelModel(id)
 		if err != nil {
-			c.JSON(internal.ResError(internal.ErrDeleteFail, err.Error()))
+			core.ResError(c, core.ErrDeleteFail, "id invalid")
 			return
 		}
 
-		c.JSON(internal.ResSuccess(id, ""))
+		core.ResSuccess(c, id)
 	})
 }

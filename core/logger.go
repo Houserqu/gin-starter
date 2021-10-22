@@ -1,30 +1,29 @@
-package internal
+package core
 
 import (
-	"github.com/lestrrat/go-file-rotatelogs"
-	"github.com/pkg/errors"
-	"github.com/rifflock/lfshook"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"log"
-	"os"
 	"path"
 	"path/filepath"
 	"time"
+
+	"github.com/gin-gonic/gin"
+	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
+	"github.com/pkg/errors"
+	"github.com/rifflock/lfshook"
+	"github.com/sirupsen/logrus"
+	"github.com/spf13/viper"
 )
 
 var Logger = logrus.New() // logrus 实例
 
-var Log *logrus.Entry       // 默认日志
-var LogAccess *logrus.Entry // 请求日志
-
-func init() {
+func InitLogger() {
 	Logger.SetReportCaller(true)       // 日志记录文件命名
 	Logger.SetLevel(logrus.DebugLevel) // 日志输出级别
 	Logger.Out = ioutil.Discard        // 禁止 logrus 的输出
 
 	// 配置文件输入 hook
-	logFolderPath, err := filepath.Abs(os.Getenv("LOG_PATH"))
+	logFolderPath, err := filepath.Abs(viper.GetString("log.path"))
 	if err != nil {
 		log.Fatalf(err.Error())
 	}
@@ -54,7 +53,9 @@ func init() {
 	})
 
 	Logger.AddHook(lfHook)
+}
 
-	Log = Logger.WithFields(logrus.Fields{"type": "DEFAULT"})
-	LogAccess = Logger.WithFields(logrus.Fields{"type": "ACCESS"})
+func Log(c *gin.Context) *logrus.Entry {
+	value, _ := c.Get("reqId")
+	return Logger.WithFields(logrus.Fields{"type": "DEFAULT", "reqId": value})
 }

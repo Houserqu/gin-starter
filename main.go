@@ -1,34 +1,41 @@
 package main
 
 import (
+	"log"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/joho/godotenv/autoload"
-	"houserqu.com/gin-starter/controller"
-	"houserqu.com/gin-starter/internal/middleware"
-	"log"
-	"os"
+	"github.com/spf13/viper"
+	"houserqu.com/gin-starter/core"
+	"houserqu.com/gin-starter/middleware"
+	"houserqu.com/gin-starter/module/example"
+	"houserqu.com/gin-starter/module/user"
+	"houserqu.com/gin-starter/module/view"
 )
 
 func main() {
+	core.InitConfig()
+	core.InitLogger()
+	core.InitMysql()
+
 	r := gin.New()
 
+	// 注册中间件
 	r.Use(gin.Recovery())
 	r.Use(middleware.Access())
 
-	if os.Getenv("GIN_LOG") == "true" {
-		r.Use(gin.Logger())
-	}
-
 	// 静态文件
-	r.Static("/public", "./web/public")
-	r.LoadHTMLGlob("./web/views/*")
+	r.Static("/public", "./public")
+	// html 模板文件
+	r.LoadHTMLGlob("./module/**/*.html")
 
 	// 注册路由
-	controller.InitViewRouter(r)
-	controller.InitExampleRouter(r)
+	view.InitViewRouter(r)
+	example.InitExampleRouter(r)
+	user.InitUserRouter(r)
 
 	// 监听端口
-	err := r.Run(os.Getenv("SERVER_ADDR")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+	err := r.Run(viper.GetString("server.addr"))
 	if err != nil {
 		log.Fatal("Error listen")
 	}

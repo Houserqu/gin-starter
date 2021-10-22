@@ -1,4 +1,4 @@
-package example
+package user
 
 import (
 	"database/sql"
@@ -6,11 +6,11 @@ import (
 )
 
 type User struct {
-	ID          uint
+	ID          int
 	Name        string
-	Email       *string
-	Age         uint8
-	Birthday    *time.Time
+	Email       string
+	Age         int
+	Birthday    time.Time
 	ActivatedAt sql.NullTime
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
