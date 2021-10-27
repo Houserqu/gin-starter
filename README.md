@@ -10,7 +10,27 @@ gin web 开发脚手架，根据个人开发经验封装的一些基础能力，
 
 ## 目录结构
 
-> 借鉴 [project-layout](https://github.com/golang-standards/project-layout)
+```go
+.
+├── Dockerfile
+├── README.md
+├── build.sh       // 构建脚本
+├── config.yaml    // 系统配置（也可以放业务配置，修改实时生效）
+├── core           // 脚手架公共代码
+├── dev.sh         // 开发模式服务启动脚手架
+├── docs           // 文档目录
+├── go.mod
+├── go.sum
+├── main.go
+├── middleware     // 中间件目录
+├── module         // 业务代码模块目录
+│   ├── router.go  // 路由定义文件
+│   ├── user       // 用户模块
+│   ├── view       // 视图模块，展示页面
+│   └── ...
+├── public         // 静态目录，访问路径 /public/
+└── view           // 视图渲染模板文件目录
+```
 
 ## 开发
 
@@ -47,7 +67,7 @@ air       # 全局安装启动
 
 ### 配置
 
-使用 [viper](https://github.com/spf13/viper) 库来管理系统配置，同时开启 watch 模式，默认加载项目根目录的 config.yaml 文件
+使用 [viper](https://github.com/spf13/viper) 库来管理系统配置，同时开启 watch 模式（修改文件后 viper 能获取到最新的配置），默认加载项目根目录的 config.yaml 文件
 config.yaml 配置文件不应该包含在版本库中
 
 ### 日志
@@ -55,7 +75,7 @@ config.yaml 配置文件不应该包含在版本库中
 使用 [logrus](https://github.com/sirupsen/logrus) 日志工具，支持记录请求ID，用于查看日志链路。
 
 ```golang
-import 	"houserqu.com/gin-starter/internal"
+import 	"houserqu.com/gin-starter/core"
 
 internal.Log(c).Info("123") // 由于无法获取协程上下文，所以需要显式的传递 gin.Context，才能记录 request id
 ```
@@ -88,13 +108,13 @@ docker build -t gin-starter:latest .
 docker run -d --env-file prod.env -p 8090:8088 -v /Users/houserqu/gin-starter/logs:/app/logs gin-starter:latest
 ```
 
--p: 指定映射端口，容器内服务端口可以通过 env 文件配置  
--v: 指定日志文件主机挂载目录，容器内日志目录可以通过 env 文件配置
+-p: 指定映射端口，容器内服务端口可以通过 config.yaml 文件配置  
+-v: 指定日志文件主机挂载目录，容器内日志目录可以通过 config.yaml 文件配置
 
 ### 直接部署
 
 ```bash
 go build main.go # 构建
 ./main           # 直接启动
-pm2 start ./main # pm 守护进程启动
+pm2 start ./main # pm2 守护进程启动
 ```
