@@ -8,9 +8,7 @@ import (
 	"github.com/spf13/viper"
 	"houserqu.com/gin-starter/core"
 	"houserqu.com/gin-starter/middleware"
-	"houserqu.com/gin-starter/module/example"
-	"houserqu.com/gin-starter/module/user"
-	"houserqu.com/gin-starter/module/view"
+	"houserqu.com/gin-starter/module"
 )
 
 func main() {
@@ -30,9 +28,7 @@ func main() {
 	r.LoadHTMLGlob("./view/*.html")
 
 	// 注册路由
-	view.InitViewRouter(r)
-	example.InitExampleRouter(r)
-	user.InitUserRouter(r)
+	module.InitRouter(r)
 
 	// 监听端口
 	err := r.Run(viper.GetString("server.addr"))

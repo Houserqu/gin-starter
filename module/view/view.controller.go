@@ -6,8 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitViewRouter(r *gin.Engine) {
-	r.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.html", gin.H{})
-	})
+func IndexView(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
