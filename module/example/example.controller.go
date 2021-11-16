@@ -28,7 +28,7 @@ func InitExampleRouter(r *gin.Engine) {
 			return
 		}
 
-		core.ResSuccess(c, data, "")
+		core.ResSuccess(c, data)
 	})
 
 	r.GET("/error", func(c *gin.Context) {
